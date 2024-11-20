@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User
+from models import db, User, Planet, People, Favorite
 #from models import Person
 
 app = Flask(__name__)
@@ -39,11 +39,46 @@ def sitemap():
 @app.route('/user', methods=['GET'])
 def handle_hello():
 
-    response_body = {
-        "msg": "Hello, this is your GET /user response "
-    }
+    response_body = User.query.all()
+    if response_body == []: 
+        return jsonify({"msg": "No existen usuarios"}), 404
+    serialized_user=[item.serialize() for item in response_body]
 
-    return jsonify(response_body), 200
+    return jsonify(serialized_user), 200
+
+
+@app.route('/planet', methods=['GET'])
+def get_planet():
+
+    response_body = Planet.query.all()
+    if response_body == []: 
+        return jsonify({"msg": "No existen planetas"}), 404
+    serialized_planet=[item.serialize() for item in response_body]
+
+    return jsonify(serialized_planet), 200
+
+
+@app.route('/people', methods=['GET'])
+def get_people():
+
+    response_body = People.query.all()
+    if response_body == []: 
+        return jsonify({"msg": "No existen personajes"}), 404
+    serialized_people=[item.serialize() for item in response_body]
+
+    return jsonify(serialized_people), 200
+
+
+@app.route('/favorite', methods=['GET'])
+def get_favorite():
+
+    response_body = Favorite.query.all()
+    if response_body == []: 
+        return jsonify({"msg": "No existen favoritos"}), 404
+    serialized_favorite=[item.serialize() for item in response_body]
+
+    return jsonify(serialized_favorite), 200
+
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
