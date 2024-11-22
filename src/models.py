@@ -76,6 +76,9 @@ class Favorite(db.Model):
         return {
             "id": self.id,
             "people_id": people.serialize() if people else None,
+            # "people_id": self.people.serialize() if self.people != None else "",
             "user_id": user.serialize() if user else None,
+            # "user_id": self.user.serialize() if self.user != None else "",
             "planet_id": planet.serialize() if planet else None,
+            # "planet_id": self.planet.serialize() if self.planet != None else "",
         }
